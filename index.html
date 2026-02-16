@@ -70,7 +70,7 @@
         .header {
             background: var(--color-header-bg);
             color: var(--color-text-on-primary);
-            padding: 14px 24px;
+            padding: 10px 24px;
             box-shadow: var(--shadow-md);
             position: sticky;
             top: 0;
@@ -118,12 +118,14 @@
             display: flex;
             min-height: calc(100vh - 62px);
             position: relative;
+            max-width: 100%;
+            margin: 0 auto;
         }
 
         /* ===== ЛЕВЫЙ БЛОК - КОНТЕНТ ===== */
         .left-block {
             flex: 1;
-            padding: 30px;
+            padding: 30px 80px;
             overflow-y: auto;
             background: var(--color-bg-secondary);
         }
@@ -160,6 +162,7 @@
             font-size: 15px;
             transition: all 0.2s ease;
             border-radius: 8px;
+            border-bottom: 1px solid #E6E6E6;
         }
         .menu-item:hover {
             background: var(--color-hover);
@@ -177,34 +180,42 @@
         }
 
         /* ===== СЕКЦИИ КОНТЕНТА ===== */
-        .content-section {
+        .section {
             background: var(--color-bg);
             border-radius: 16px;
-            padding: 30px;
             box-shadow: var(--shadow-sm);
             margin-bottom: 24px;
             border: 1px solid var(--color-border-light);
             transition: box-shadow 0.2s;
-            scroll-margin-top: 80px; /* Отступ при прокрутке к якорю */
+            /* scroll-margin-top гарантирует, что при переходе по ссылке (например, из меню)
+               заголовок секции не будет перекрыт фиксированной шапкой */
+            scroll-margin-top: 70px;
         }
-        .content-section:hover {
+        .section:hover {
             box-shadow: var(--shadow-md);
         }
-        .content-section:last-child {
+        .section__body {
+            padding: 30px;          
+        }
+
+        .section:last-child {
             margin-bottom: 0;
         }
 
-        .content-section h3 {
+        .section__header{
+            padding: 20px 30px;
             font-size: 20px;
-            font-weight: 600;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            font-weight: 500;
             color: var(--color-text);
-            margin-bottom: 24px;
-            letter-spacing: -0.3px;
+            background-color: #E6E6E6;
         }
-
-        /* ID для якорей */
-        [id] {
-            scroll-margin-top: 80px;
+        .section__subtitle{
+            margin: 20px 0;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--color-text);
         }
 
         /* ===== ФОРМА ПОИСКА ===== */
@@ -329,28 +340,13 @@
         }
 
         /* ===== СЕТКА ПЛЕНОМОВ ===== */
-        .plenum-group {
-            margin-bottom: 40px;
-        }
-        .plenum-group:last-child {
-            margin-bottom: 0;
-        }
-        .plenum-group-title {
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--color-text);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--color-border);
-        }
-
-        .plenum-grid {
+        .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
             gap: 16px;
         }
 
-        .plenum-item {
+        .card-item {
             background: var(--color-bg);
             border-radius: 12px;
             padding: 20px;
@@ -362,10 +358,10 @@
             color: inherit;
             cursor: pointer;
             box-shadow: var(--shadow-sm);
-            border: 1px solid var(--color-border-light);
-            border-left: 5px solid var(--color-border);
+            border-left: 6px solid var(--color-border);
+            
         }
-        .plenum-item:hover {
+        .card-item:hover {
             border-color: var(--color-primary);
             border-left-color: var(--color-primary);
             box-shadow: var(--shadow-primary);
@@ -391,6 +387,42 @@
             flex: 1;
             font-weight: 400;
         }
+        /* ===== КНОПКА НАВЕРХ ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 290px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            border: 2px solid white;
+        }
+
+        .back-to-top:hover {
+            background: var(--color-primary-hover);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-primary);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top i {
+            font-size: 20px;
+        }
 
         /* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
         @media screen and (max-width: 768px) {
@@ -410,7 +442,7 @@
                 z-index: 1001;
                 padding: 80px 20px 20px;
                 border-left: none;
-                transition: right 0.3s ease; /* Изменяем right вместо transform */
+                transition: right 0.3s ease;
                 overflow-y: auto;
                 box-shadow: var(--shadow-lg);
             }
@@ -446,6 +478,7 @@
             .container {
                 margin-top: 62px;
                 min-height: calc(100vh - 62px);
+                max-width: 100%;
             }
 
             /* Левый блок на всю ширину */
@@ -463,19 +496,46 @@
                 padding: 16px 20px;
                 font-size: 16px;
                 border-radius: 12px;
+                border-bottom: 1px solid #E6E6E6;
+                /* Добавлен цвет текста для мобильной версии */
+                color: var(--color-text);
+            }
+
+            /* Стили для заголовков секций на мобильных */
+            .section__header{
+                padding: 10px 20px;
+                font-size: 18px;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                font-weight: 500;
+                color: var(--color-text);
+                background-color: #E6E6E6;
+            }
+            .section__subtitle{
+                margin: 20px 0;
+                font-size: 16px;
+                color: var(--color-text);
             }
 
             /* Сетки */
-            .plenum-grid {
+            .grid {
                 grid-template-columns: 1fr;
-            }
-
-            .content-section {
-                padding: 20px;
             }
 
             .codex-grid {
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            /* Кнопка вверх на мобильных */
+            .back-to-top {
+                width: 45px;
+                height: 45px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .back-to-top i {
+                font-size: 18px;
             }
         }
 
@@ -486,11 +546,13 @@
             .content-links-grid {
                 grid-template-columns: 1fr;
             }
-            .plenum-item {
+            .card-item {
                 padding: 16px;
             }
         }
+
     </style>
+
 </head>
 <body>
     <!-- ШАПКА -->
@@ -512,146 +574,168 @@
         <!-- ЛЕВЫЙ БЛОК - КОНТЕНТ (ВЕСЬ ВИДЕН СРАЗУ) -->
         <main class="left-block">
             <!-- РАЗДЕЛ: ЗАКОНОДАТЕЛЬСТВО -->
-            <section id="legislation" class="content-section">
-                <h3>Поиск в КонсультантПлюс</h3>
-                <div class="search-form">
-                    <input type="text" id="consultantQuery" placeholder="Введите поисковый запрос" class="search-input">
-                    <button class="search-button" id="consultantSearchBtn" aria-label="Найти"><i class="fas fa-search"></i></button>
+            <section id="legislation" class="section">
+                <div class="section__header">
+                    Поиск в КонсультантПлюс
                 </div>
-
-                <h3>Быстрые ссылки</h3>
-                <div class="codex-grid">
-                    <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=query" target="_blank" class="codex-button"><i class="fas fa-search"></i><span>К+ Поиск</span></a>
-                    <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=502317" target="_blank" class="codex-button"><i class="fas fa-file-contract"></i><span>ГПК</span></a>
-                    <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=520138" target="_blank" class="codex-button"><i class="fas fa-gavel"></i><span>АПК</span></a>
-                    <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=523314" target="_blank" class="codex-button"><i class="fas fa-balance-scale"></i><span>КАС</span></a>
-                    <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=508490" target="_blank" class="codex-button"><i class="fas fa-book"></i><span>ГК-1</span></a>
-                    <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=508506" target="_blank" class="codex-button"><i class="fas fa-book-open"></i><span>ГК-2</span></a>
-                    <a href="https://www.consultant.ru/cons/cgi/online.cgi?from=482748-0&req=doc&base=LAW&n=502257" target="_blank" class="codex-button"><i class="fas fa-shopping-cart"></i><span>ЗПП</span></a>
-                    <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=523322" target="_blank" class="codex-button"><i class="fas fa-user-shield"></i><span>Приставы</span></a>
+                <div class="section__body">
+                    <div class="search-form">
+                        <input type="text" id="consultantQuery" placeholder="Введите поисковый запрос" class="search-input">
+                        <button class="search-button" id="consultantSearchBtn" aria-label="Найти в КонсультантПлюс"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="section__subtitle">
+                        Быстрые ссылки
+                    </div>
+                    <div class="codex-grid">
+                        <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=query" target="_blank" class="codex-button"><i class="fas fa-search"></i><span>К+ Поиск</span></a>
+                        <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=502317" target="_blank" class="codex-button"><i class="fas fa-file-contract"></i><span>ГПК</span></a>
+                        <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=520138" target="_blank" class="codex-button"><i class="fas fa-gavel"></i><span>АПК</span></a>
+                        <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=523314" target="_blank" class="codex-button"><i class="fas fa-balance-scale"></i><span>КАС</span></a>
+                        <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=508490" target="_blank" class="codex-button"><i class="fas fa-book"></i><span>ГК-1</span></a>
+                        <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=508506" target="_blank" class="codex-button"><i class="fas fa-book-open"></i><span>ГК-2</span></a>
+                        <a href="https://www.consultant.ru/cons/cgi/online.cgi?from=482748-0&req=doc&base=LAW&n=502257" target="_blank" class="codex-button"><i class="fas fa-shopping-cart"></i><span>ЗПП</span></a>
+                        <a href="https://www.consultant.ru/cons/cgi/online.cgi?req=doc&base=LAW&n=523322" target="_blank" class="codex-button"><i class="fas fa-user-shield"></i><span>Приставы</span></a>
+                    </div>
                 </div>
             </section>
 
             <!-- РАЗДЕЛ: СУДЫ -->
-            <section id="courts" class="content-section">
-                <h3>Суды</h3>
-                <div class="content-links-grid">
-                    <a href="https://kad.arbitr.ru" target="_blank" class="content-button"><i class="fas fa-building-columns"></i><span>КАД. Арбитр</span></a>
-                    <a href="https://oktiabrsky.blg.sudrf.ru/modules.php?name=press_dep" target="_blank" class="content-button"><img src="https://www.vsrf.ru/local/templates/vs/img/emblems/emblem_gray.svg" class="content-img" alt=""><span>Октябрьский рай.суд</span></a>
-                    <a href="https://sverdlovsky.blg.sudrf.ru/modules.php?name=press_dep" target="_blank" class="content-button"><img src="https://www.vsrf.ru/local/templates/vs/img/emblems/emblem_gray.svg" class="content-img" alt=""><span>Свердловский рай.суд</span></a>
-                    <a href="https://belgorodsky.blg.sudrf.ru/modules.php?name=press_dep" target="_blank" class="content-button"><img src="https://www.vsrf.ru/local/templates/vs/img/emblems/emblem_gray.svg" class="content-img" alt=""><span>Белгородский рай.суд</span></a>
-                    <a href="https://oblsud.blg.sudrf.ru/modules.php?name=press_dep" target="_blank" class="content-button"><img src="https://www.vsrf.ru/local/templates/vs/img/emblems/emblem_gray.svg" class="content-img" alt=""><span>Белгородский обл.суд</span></a>
-                    <a href="https://ej.sudrf.ru" target="_blank" class="content-button"><i class="fa-solid fa-gavel"></i><span>ГАС "Правосудие"</span></a>
+            <section id="courts" class="section">
+                <div class="section__header">
+                    Суды
+                </div>
+                <div class="section__body">
+                    <div class="content-links-grid">
+                        <a href="https://kad.arbitr.ru" target="_blank" class="content-button"><i class="fas fa-building-columns"></i><span>КАД. Арбитр</span></a>
+                        <a href="https://oktiabrsky.blg.sudrf.ru/modules.php?name=press_dep" target="_blank" class="content-button"><img src="https://www.vsrf.ru/local/templates/vs/img/emblems/emblem_gray.svg" class="content-img" alt=""><span>Октябрьский рай.суд</span></a>
+                        <a href="https://sverdlovsky.blg.sudrf.ru/modules.php?name=press_dep" target="_blank" class="content-button"><img src="https://www.vsrf.ru/local/templates/vs/img/emblems/emblem_gray.svg" class="content-img" alt=""><span>Свердловский рай.суд</span></a>
+                        <a href="https://belgorodsky.blg.sudrf.ru/modules.php?name=press_dep" target="_blank" class="content-button"><img src="https://www.vsrf.ru/local/templates/vs/img/emblems/emblem_gray.svg" class="content-img" alt=""><span>Белгородский рай.суд</span></a>
+                        <a href="https://oblsud.blg.sudrf.ru/modules.php?name=press_dep" target="_blank" class="content-button"><img src="https://www.vsrf.ru/local/templates/vs/img/emblems/emblem_gray.svg" class="content-img" alt=""><span>Белгородский обл.суд</span></a>
+                        <a href="https://ej.sudrf.ru" target="_blank" class="content-button"><i class="fa-solid fa-gavel"></i><span>ГАС "Правосудие"</span></a>
+                    </div>
                 </div>
             </section>
 
             <!-- РАЗДЕЛ: КАЛЬКУЛЯТОРЫ -->
-            <section id="calculators" class="content-section">
-                <h3>Юридические калькуляторы</h3>
-                <div class="content-links-grid">
-                    <a href="https://fincalculator.ru/kalkulyator-dnej" target="_blank" class="content-button"><i class="fas fa-calendar-alt"></i><span>Калькулятор дней</span></a>
-                    <a href="https://dogovor-urist.ru/calculator/dogovor_neustoyka/" target="_blank" class="content-button"><i class="fas fa-percentage"></i><span>Неустойка по договору</span></a>
-                    <a href="https://dogovor-urist.ru/calculator/395gk/" target="_blank" class="content-button"><i class="fas fa-money-bill-wave"></i><span>Неустойка по ст. 395 ГК РФ</span></a>
-                    <a href="https://calc.consultant.ru/gosposhlina-arbitr#Imusch_1" target="_blank" class="content-button"><i class="fas fa-receipt"></i><span>Госпошлина «Арбитраж»</span></a>
-                    <a href="https://calc.consultant.ru/gosposhlina-soj#Imusch_1" target="_blank" class="content-button"><i class="fas fa-file-invoice-dollar"></i><span>Госпошлина «СОЮ»</span></a>
+            <section id="calculators" class="section">
+                <div class="section__header">
+                    Юридические калькуляторы
+                </div>
+                <div class="section__body">
+                    <div class="content-links-grid">
+                        <a href="https://fincalculator.ru/kalkulyator-dnej" target="_blank" class="content-button"><i class="fas fa-calendar-alt"></i><span>Калькулятор дней</span></a>
+                        <a href="https://dogovor-urist.ru/calculator/dogovor_neustoyka/" target="_blank" class="content-button"><i class="fas fa-percentage"></i><span>Неустойка по договору</span></a>
+                        <a href="https://dogovor-urist.ru/calculator/395gk/" target="_blank" class="content-button"><i class="fas fa-money-bill-wave"></i><span>Неустойка по ст. 395 ГК РФ</span></a>
+                        <a href="https://calc.consultant.ru/gosposhlina-arbitr#Imusch_1" target="_blank" class="content-button"><i class="fas fa-receipt"></i><span>Госпошлина «Арбитраж»</span></a>
+                        <a href="https://calc.consultant.ru/gosposhlina-soj#Imusch_1" target="_blank" class="content-button"><i class="fas fa-file-invoice-dollar"></i><span>Госпошлина «СОЮ»</span></a>
+                    </div>
                 </div>
             </section>
 
             <!-- РАЗДЕЛ: ЧИТАТЬ -->
-            <section id="read" class="content-section">
-                <h3>Юридические новости</h3>
-                <div class="content-links-grid">
-                    <a href="https://www.consultant.ru/legalnews/jur/" target="_blank" class="content-button"><i class="fas fa-newspaper"></i><span>Новости юриста (К+)</span></a>
-                    <a href="https://www.advgazeta.ru/novosti/" target="_blank" class="content-button"><i class="fas fa-gavel"></i><span>Адвокатская газета</span></a>
-                    <a href="https://pravo.ru" target="_blank" class="content-button"><i class="fas fa-scale-balanced"></i><span>Право.ру</span></a>
-                    <a href="https://www.advgazeta.ru/ag-expert/" target="_blank" class="content-button"><i class="fas fa-chart-line"></i><span>АГ Эксперт</span></a>
-                    <a href="https://e.law.ru/" target="_blank" class="content-button"><i class="fas fa-laptop-code"></i><span>Юрист компании</span></a>
+            <section id="read" class="section">
+                <div class="section__header">
+                    Юридические новости
+                </div>
+                <div class="section__body">
+                    <div class="content-links-grid">
+                        <a href="https://www.consultant.ru/legalnews/jur/" target="_blank" class="content-button"><i class="fas fa-newspaper"></i><span>Новости юриста (К+)</span></a>
+                        <a href="https://www.advgazeta.ru/novosti/" target="_blank" class="content-button"><i class="fas fa-gavel"></i><span>Адвокатская газета</span></a>
+                        <a href="https://pravo.ru" target="_blank" class="content-button"><i class="fas fa-scale-balanced"></i><span>Право.ру</span></a>
+                        <a href="https://www.advgazeta.ru/ag-expert/" target="_blank" class="content-button"><i class="fas fa-chart-line"></i><span>АГ Эксперт</span></a>
+                        <a href="https://e.law.ru/" target="_blank" class="content-button"><i class="fas fa-laptop-code"></i><span>Юрист компании</span></a>
+                    </div>
                 </div>
             </section>
 
             <!-- РАЗДЕЛ: ПРАВА ПОТРЕБИТЕЛЕЙ -->
-            <section id="consumers" class="content-section">
-                <h3>Права потребителей</h3>
-                <div class="content-links-grid">
-                    <a href="https://www.consultant.ru/cons/cgi/online.cgi?from=482748-0&req=doc&base=LAW&n=502257&rnd=9J9cIA#rqlUL7V4cZFOKAbs" target="_blank" class="content-button"><i class="fas fa-book-bookmark"></i><span>Закон о защите прав потребителей</span></a>
-                    <a href="https://www.consultant.ru/legalnews/?tag_ids=1223" target="_blank" class="content-button"><i class="fas fa-bullhorn"></i><span>Новости ЗПП (К+)</span></a>
-                    <a href="https://azpp.ru" target="_blank" class="content-button"><i class="fas fa-shield-alt"></i><span>Азбука прав потребителей</span></a>
-                    <a href="https://31.rospotrebnadzor.ru/" target="_blank" class="content-button"><img src="https://31.rospotrebnadzor.ru/local/templates/rospotreb31/images/logo.svg" class="content-img" alt=""><span>Роспотребнадзор 31</span></a>
-                    <a href="https://zpp.rospotrebnadzor.ru/news/regional" target="_blank" class="content-button"><img src="https://31.rospotrebnadzor.ru/local/templates/rospotreb31/images/logo.svg" class="content-img" alt=""><span>РПН. Новости ЗПП</span></a>
+            <section id="consumers" class="section">
+                <div class="section__header">
+                    Права потребителей
+                </div>
+                <div class="section__body">                
+                    <div class="content-links-grid">
+                        <a href="https://www.consultant.ru/cons/cgi/online.cgi?from=482748-0&req=doc&base=LAW&n=502257&rnd=9J9cIA#rqlUL7V4cZFOKAbs" target="_blank" class="content-button"><i class="fas fa-book-bookmark"></i><span>Закон о защите прав потребителей</span></a>
+                        <a href="https://www.consultant.ru/legalnews/?tag_ids=1223" target="_blank" class="content-button"><i class="fas fa-bullhorn"></i><span>Новости ЗПП (К+)</span></a>
+                        <a href="https://azpp.ru" target="_blank" class="content-button"><i class="fas fa-shield-alt"></i><span>Азбука прав потребителей</span></a>
+                        <a href="https://31.rospotrebnadzor.ru/" target="_blank" class="content-button"><img src="https://31.rospotrebnadzor.ru/local/templates/rospotreb31/images/logo.svg" class="content-img" alt=""><span>Роспотребнадзор 31</span></a>
+                        <a href="https://zpp.rospotrebnadzor.ru/news/regional" target="_blank" class="content-button"><img src="https://31.rospotrebnadzor.ru/local/templates/rospotreb31/images/logo.svg" class="content-img" alt=""><span>РПН. Новости ЗПП</span></a>
+                    </div>
                 </div>
             </section>
 
             <!-- РАЗДЕЛ: ДОПОЛНИТЕЛЬНО -->
-            <section id="additional" class="content-section">
-                <h3>Поиск на Checko.ru</h3>
-                <div class="search-form">
-                    <input type="text" id="checkoQuery" placeholder="ИНН, ОГРН или название" class="search-input">
-                    <button class="search-button" id="checkoSearchBtn" aria-label="Найти"><i class="fas fa-search"></i></button>
+            <section id="additional" class="section">
+                <div class="section__header">
+                    Поиск на Checko.ru
                 </div>
+                <div class="section__body">   
+                    <div class="search-form">
+                        <input type="text" id="checkoQuery" placeholder="ИНН, ОГРН или название" class="search-input">
+                        <button class="search-button" id="checkoSearchBtn" aria-label="Найти на Checko.ru"><i class="fas fa-search"></i></button>
+                    </div>
 
-                <h3>Полезные сервисы</h3>
-                <div class="content-links-grid">
-                    <a href="https://star-pro.ru/proverka-kontragenta" target="_blank" class="content-button"><i class="fas fa-bullhorn"></i><span>Проверка контрагента</span></a>
-                    <a href="https://www.gosuslugi.ru/600352/1/form?_=1767541808599" target="_blank" class="content-button"><img src="https://zpp.rospotrebnadzor.ru/Skin/rpn/images/footerLinks2/gosuslugi.png" class="content-img" alt=""><span>Госуслуги-Приставы</span></a>
-                    <a href="https://yandex.ru/maps/-/CLXQRVYr" target="_blank" class="content-button"><i class="fas fa-map-marked-alt"></i><span>Яндекс Карты</span></a>
+                    <div class="section__subtitle">Полезные сервисы</div>
+                    <div class="content-links-grid">
+                        <a href="https://star-pro.ru/proverka-kontragenta" target="_blank" class="content-button"><i class="fas fa-bullhorn"></i><span>Проверка контрагента</span></a>
+                        <a href="https://www.gosuslugi.ru/600352/1/form?_=1767541808599" target="_blank" class="content-button"><img src="https://zpp.rospotrebnadzor.ru/Skin/rpn/images/footerLinks2/gosuslugi.png" class="content-img" alt=""><span>Госуслуги-Приставы</span></a>
+                        <a href="https://yandex.ru/maps/-/CLXQRVYr" target="_blank" class="content-button"><i class="fas fa-map-marked-alt"></i><span>Яндекс Карты</span></a>
+                    </div>
                 </div>
             </section>
 
             <!-- РАЗДЕЛ: ПЛЕНУМЫ ВС РФ -->
-            <section id="plenums" class="content-section">
-                <h3>Пленумы Верховного Суда РФ</h3>
-
-                <!-- Группа: Процесс -->
-                <div class="plenum-group">
-                    <h4 class="plenum-group-title">#процесс</h4>
-                    <div class="plenum-grid">
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_388236/" target="_blank" class="plenum-item"><span class="plenum-subtag">#претензия</span><span class="plenum-name">Постановление Пленума ВС РФ от 22.06.2021 N 18 "О некоторых вопросах досудебного урегулирования споров..."</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_448842/" target="_blank" class="plenum-item"><span class="plenum-subtag">#обеспечение</span><span class="plenum-name">Постановление Пленума ВС РФ от 01.06.2023 N 15 "О некоторых вопросах принятия судами мер по обеспечению иска..."</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_78038/" target="_blank" class="plenum-item"><span class="plenum-subtag">#подготовка</span><span class="plenum-name">Постановление Пленума ВС РФ от 24.06.2008 N 11 "О подготовке гражданских дел к судебному разбирательству"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_522783/" target="_blank" class="plenum-item"><span class="plenum-subtag">#госпошлина</span><span class="plenum-name">Постановление Пленума ВС РФ от 23.12.2025 N 39 "О некоторых вопросах уплаты государственной пошлины..."</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_388270/" target="_blank" class="plenum-item"><span class="plenum-subtag">#давность</span><span class="plenum-name">Постановление Пленума ВС РФ от 29.09.2015 N 43 "О некоторых вопросах... об исковой давности"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_388238/" target="_blank" class="plenum-item"><span class="plenum-subtag">#апелляция</span><span class="plenum-name">Постановление Пленума ВС РФ от 22.06.2021 N 16 "О применении судами норм... производства в суде апелляционной инстанции"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_52681/" target="_blank" class="plenum-item"><span class="plenum-subtag">#КоАП</span><span class="plenum-name">Постановление Пленума ВС РФ от 24.03.2005 N 5 "О некоторых вопросах, возникающих у судов при применении КоАП РФ"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_521302/" target="_blank" class="plenum-item"><span class="plenum-subtag">#общий</span><span class="plenum-name">Постановление Пленума ВС РФ от 19.12.2003 N 23 "О судебном решении"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_413952/" target="_blank" class="plenum-item"><span class="plenum-subtag">#приказ</span><span class="plenum-name">Постановление Пленума ВС РФ от 27.12.2016 N 62 "О некоторых вопросах... о приказном производстве"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_372405/" target="_blank" class="plenum-item"><span class="plenum-subtag">#проценты</span><span class="plenum-name">Постановление Пленума ВС РФ N 13, Пленума ВАС РФ N 14 от 08.10.1998 "О практике применения... о процентах"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_194054/" target="_blank" class="plenum-item"><span class="plenum-subtag">#судрасходы</span><span class="plenum-name">Постановление Пленума ВС РФ от 21.01.2016 N 1 "О некоторых вопросах... возмещении издержек"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_413968/" target="_blank" class="plenum-item"><span class="plenum-subtag">#упрощенка</span><span class="plenum-name">Постановление Пленума ВС РФ от 18.04.2017 № 10 «О некоторых вопросах... об упрощенном производстве»</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_491104/" target="_blank" class="plenum-item"><span class="plenum-subtag">#приставы</span><span class="plenum-name">Постановление Пленума ВС РФ от 17.11.2015 № 50 «О применении судами законодательства... в ходе исполнительного производства»</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_491108/" target="_blank" class="plenum-item"><span class="plenum-subtag">#кассация</span><span class="plenum-name">Постановление Пленума ВС РФ от 22.06.2021 № 17 «О применении судами норм... производства в суде кассационной инстанции»</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_356424/" target="_blank" class="plenum-item"><span class="plenum-subtag">#кассация</span><span class="plenum-name">Постановление Пленума ВС РФ от 30.06.2020 N 13 "О применении АПК РФ... в арбитражном суде кассационной инстанции"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_521293/" target="_blank" class="plenum-item"><span class="plenum-subtag">#пересмотр</span><span class="plenum-name">Постановление Пленума ВС РФ от 11.12.2012 № 31 «О применении норм ГПК РФ... пересмотре по вновь открывшимся... обстоятельствам»</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_493491/" target="_blank" class="plenum-item"><span class="plenum-subtag">#индексация</span><span class="plenum-name">Обзор практики... связанных с индексацией присужденных судом денежных сумм (утв. Президиумом ВС РФ 18.12.2024)</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_420838/" target="_blank" class="plenum-item"><span class="plenum-subtag">#КАС</span><span class="plenum-name">Постановление Пленума ВС РФ от 28.06.2022 N 21 "О некоторых вопросах применения судами положений главы 22 КАС РФ и главы 24 АПК РФ"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_493918/" target="_blank" class="plenum-item"><span class="plenum-subtag">#КАС</span><span class="plenum-name">Постановление Пленума ВС РФ от 17.12.2024 № 41 "О подготовке административного дела к судебному разбирательству в суде первой инстанции"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_478148/" target="_blank" class="plenum-item"><span class="plenum-subtag">#арбитраж</span><span class="plenum-name">Постановление Пленума ВС РФ от 04.06.2024 № 12 «О подготовке дела к судебному разбирательству в арбитражном суде»</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_493986/" target="_blank" class="plenum-item"><span class="plenum-subtag">#КАС</span><span class="plenum-name">Постановление Пленума ВС РФ от 27.09.2016 № 36 "О некоторых вопросах применения судами КАС РФ"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_521289/" target="_blank" class="plenum-item"><span class="plenum-subtag">#КоАП</span><span class="plenum-name">Постановление Пленума ВС РФ от 24.03.2005 N 5 "О некоторых вопросах, возникающих у судов при применении КоАП РФ"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_521313/" target="_blank" class="plenum-item"><span class="plenum-subtag">#международ</span><span class="plenum-name">Постановление Пленума ВС РФ от 10.10.2003 N 5 "О применении судами общепризнанных принципов и норм международного права"</span></a>
-                    </div>
+            <section id="plenums" class="section">
+                <div class="section__header">
+                    Пленумы Верховного Суда РФ
                 </div>
+                <div class="section__body">
+                <!-- Группа: Процесс -->
+                    <div class="section__subtitle">#процесс</div>
+                    <div class="grid">
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_388236/" target="_blank" class="card-item"><span class="plenum-subtag">#претензия</span><span class="plenum-name">Постановление Пленума ВС РФ от 22.06.2021 N 18 "О некоторых вопросах досудебного урегулирования споров..."</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_448842/" target="_blank" class="card-item"><span class="plenum-subtag">#обеспечение</span><span class="plenum-name">Постановление Пленума ВС РФ от 01.06.2023 N 15 "О некоторых вопросах принятия судами мер по обеспечению иска..."</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_78038/" target="_blank" class="card-item"><span class="plenum-subtag">#подготовка</span><span class="plenum-name">Постановление Пленума ВС РФ от 24.06.2008 N 11 "О подготовке гражданских дел к судебному разбирательству"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_522783/" target="_blank" class="card-item"><span class="plenum-subtag">#госпошлина</span><span class="plenum-name">Постановление Пленума ВС РФ от 23.12.2025 N 39 "О некоторых вопросах уплаты государственной пошлины..."</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_388270/" target="_blank" class="card-item"><span class="plenum-subtag">#давность</span><span class="plenum-name">Постановление Пленума ВС РФ от 29.09.2015 N 43 "О некоторых вопросах... об исковой давности"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_388238/" target="_blank" class="card-item"><span class="plenum-subtag">#апелляция</span><span class="plenum-name">Постановление Пленума ВС РФ от 22.06.2021 N 16 "О применении судами норм... производства в суде апелляционной инстанции"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_52681/" target="_blank" class="card-item"><span class="plenum-subtag">#КоАП</span><span class="plenum-name">Постановление Пленума ВС РФ от 24.03.2005 N 5 "О некоторых вопросах, возникающих у судов при применении КоАП РФ"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_521302/" target="_blank" class="card-item"><span class="plenum-subtag">#общий</span><span class="plenum-name">Постановление Пленума ВС РФ от 19.12.2003 N 23 "О судебном решении"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_413952/" target="_blank" class="card-item"><span class="plenum-subtag">#приказ</span><span class="plenum-name">Постановление Пленума ВС РФ от 27.12.2016 N 62 "О некоторых вопросах... о приказном производстве"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_372405/" target="_blank" class="card-item"><span class="plenum-subtag">#проценты</span><span class="plenum-name">Постановление Пленума ВС РФ N 13, Пленума ВАС РФ N 14 от 08.10.1998 "О практике применения... о процентах"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_194054/" target="_blank" class="card-item"><span class="plenum-subtag">#судрасходы</span><span class="plenum-name">Постановление Пленума ВС РФ от 21.01.2016 N 1 "О некоторых вопросах... возмещении издержек"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_413968/" target="_blank" class="card-item"><span class="plenum-subtag">#упрощенка</span><span class="plenum-name">Постановление Пленума ВС РФ от 18.04.2017 № 10 «О некоторых вопросах... об упрощенном производстве»</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_491104/" target="_blank" class="card-item"><span class="plenum-subtag">#приставы</span><span class="plenum-name">Постановление Пленума ВС РФ от 17.11.2015 № 50 «О применении судами законодательства... в ходе исполнительного производства»</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_491108/" target="_blank" class="card-item"><span class="plenum-subtag">#кассация</span><span class="plenum-name">Постановление Пленума ВС РФ от 22.06.2021 № 17 «О применении судами норм... производства в суде кассационной инстанции»</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_356424/" target="_blank" class="card-item"><span class="plenum-subtag">#кассация</span><span class="plenum-name">Постановление Пленума ВС РФ от 30.06.2020 N 13 "О применении АПК РФ... в арбитражном суде кассационной инстанции"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_521293/" target="_blank" class="card-item"><span class="plenum-subtag">#пересмотр</span><span class="plenum-name">Постановление Пленума ВС РФ от 11.12.2012 № 31 «О применении норм ГПК РФ... пересмотре по вновь открывшимся... обстоятельствам»</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_493491/" target="_blank" class="card-item"><span class="plenum-subtag">#индексация</span><span class="plenum-name">Обзор практики... связанных с индексацией присужденных судом денежных сумм (утв. Президиумом ВС РФ 18.12.2024)</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_420838/" target="_blank" class="card-item"><span class="plenum-subtag">#КАС</span><span class="plenum-name">Постановление Пленума ВС РФ от 28.06.2022 N 21 "О некоторых вопросах применения судами положений главы 22 КАС РФ и главы 24 АПК РФ"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_493918/" target="_blank" class="card-item"><span class="plenum-subtag">#КАС</span><span class="plenum-name">Постановление Пленума ВС РФ от 17.12.2024 № 41 "О подготовке административного дела к судебному разбирательству в суде первой инстанции"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_478148/" target="_blank" class="card-item"><span class="plenum-subtag">#арбитраж</span><span class="plenum-name">Постановление Пленума ВС РФ от 04.06.2024 № 12 «О подготовке дела к судебному разбирательству в арбитражном суде»</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_493986/" target="_blank" class="card-item"><span class="plenum-subtag">#КАС</span><span class="plenum-name">Постановление Пленума ВС РФ от 27.09.2016 № 36 "О некоторых вопросах применения судами КАС РФ"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_521289/" target="_blank" class="card-item"><span class="plenum-subtag">#КоАП</span><span class="plenum-name">Постановление Пленума ВС РФ от 24.03.2005 N 5 "О некоторых вопросах, возникающих у судов при применении КоАП РФ"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_521313/" target="_blank" class="card-item"><span class="plenum-subtag">#международ</span><span class="plenum-name">Постановление Пленума ВС РФ от 10.10.2003 N 5 "О применении судами общепризнанных принципов и норм международного права"</span></a>
+                    </div>
 
                 <!-- Группа: Обязательства -->
-                <div class="plenum-group">
-                    <h4 class="plenum-group-title">#обязательства</h4>
-                    <div class="plenum-grid">
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_96790/" target="_blank" class="plenum-item"><span class="plenum-subtag">#вред</span><span class="plenum-name">Постановление Пленума ВС РФ от 26.01.2010 N 1 "О применении судами гражданского законодательства... по обязательствам вследствие причинения вреда..."</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_207545/" target="_blank" class="plenum-item"><span class="plenum-subtag">#исполнение</span><span class="plenum-name">Постановление Пленума ВС РФ от 22.11.2016 N 54 "О некоторых вопросах применения общих положений ГК РФ об обязательствах и их исполнении"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_195783/" target="_blank" class="plenum-item"><span class="plenum-subtag">#ответственность</span><span class="plenum-name">Постановление Пленума ВС РФ от 24.03.2016 N 7 "О применении судами некоторых положений ГК РФ об ответственности за нарушение обязательств"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_286129/" target="_blank" class="plenum-item"><span class="plenum-subtag">#перемена</span><span class="plenum-name">Постановление Пленума ВС РФ от 21.12.2017 N 54 "О некоторых вопросах применения... о перемене лиц в обязательстве"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_355061/" target="_blank" class="plenum-item"><span class="plenum-subtag">#прекращение</span><span class="plenum-name">Постановление Пленума ВС РФ от 11.06.2020 N 6 "О некоторых вопросах применения положений ГК РФ о прекращении обязательств"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_519204/" target="_blank" class="plenum-item"><span class="plenum-subtag">#субсидиарка</span><span class="plenum-name">Обзор практики... о субсидиарной ответственности контролирующих лиц... (утв. Президиумом ВС РФ 19.11.2025)</span></a>
+                    <div class="section__subtitle">#обязательства</div>
+                    <div class="grid">
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_96790/" target="_blank" class="card-item"><span class="plenum-subtag">#вред</span><span class="plenum-name">Постановление Пленума ВС РФ от 26.01.2010 N 1 "О применении судами гражданского законодательства... по обязательствам вследствие причинения вреда..."</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_207545/" target="_blank" class="card-item"><span class="plenum-subtag">#исполнение</span><span class="plenum-name">Постановление Пленума ВС РФ от 22.11.2016 N 54 "О некоторых вопросах применения общих положений ГК РФ об обязательствах и их исполнении"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_195783/" target="_blank" class="card-item"><span class="plenum-subtag">#ответственность</span><span class="plenum-name">Постановление Пленума ВС РФ от 24.03.2016 N 7 "О применении судами некоторых положений ГК РФ об ответственности за нарушение обязательств"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_286129/" target="_blank" class="card-item"><span class="plenum-subtag">#перемена</span><span class="plenum-name">Постановление Пленума ВС РФ от 21.12.2017 N 54 "О некоторых вопросах применения... о перемене лиц в обязательстве"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_355061/" target="_blank" class="card-item"><span class="plenum-subtag">#прекращение</span><span class="plenum-name">Постановление Пленума ВС РФ от 11.06.2020 N 6 "О некоторых вопросах применения положений ГК РФ о прекращении обязательств"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_519204/" target="_blank" class="card-item"><span class="plenum-subtag">#субсидиарка</span><span class="plenum-name">Обзор практики... о субсидиарной ответственности контролирующих лиц... (утв. Президиумом ВС РФ 19.11.2025)</span></a>
                     </div>
-                </div>
 
                 <!-- Группа: ГК -->
-                <div class="plenum-group">
-                    <h4 class="plenum-group-title">#ГК</h4>
-                    <div class="plenum-grid">
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_431485/" target="_blank" class="plenum-item"><span class="plenum-subtag">#моральный вред</span><span class="plenum-name">Постановление Пленума ВС РФ от 15.11.2022 № 3 «О практике применения судами норм о компенсации морального вреда»</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_464683/" target="_blank" class="plenum-item"><span class="plenum-subtag">#собственность</span><span class="plenum-name">Постановление Пленума ВС РФ № 10, Пленума ВАС РФ № 22 от 29.04.2010 «О некоторых вопросах... защите права собственности и других вещных прав»</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_181602/" target="_blank" class="plenum-item"><span class="plenum-subtag">#ГК</span><span class="plenum-name">Постановление Пленума Верховного Суда РФ от 23.06.2015 N 25 "О применении судами некоторых положений раздела I части первой ГК РФ"</span></a>
-                        <a href="https://www.consultant.ru/document/cons_doc_LAW_314779/" target="_blank" class="plenum-item"><span class="plenum-subtag">#договор</span><span class="plenum-name">Постановление Пленума Верховного Суда РФ от 25.12.2018 N 49 "О некоторых вопросах применения общих положений ГК РФ о заключении и толковании договора"</span></a>
+                    <div class="section__subtitle">#ГК</div>
+                    <div class="grid">
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_431485/" target="_blank" class="card-item"><span class="plenum-subtag">#моральный вред</span><span class="plenum-name">Постановление Пленума ВС РФ от 15.11.2022 № 3 «О практике применения судами норм о компенсации морального вреда»</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_464683/" target="_blank" class="card-item"><span class="plenum-subtag">#собственность</span><span class="plenum-name">Постановление Пленума ВС РФ № 10, Пленума ВАС РФ № 22 от 29.04.2010 «О некоторых вопросах... защите права собственности и других вещных прав»</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_181602/" target="_blank" class="card-item"><span class="plenum-subtag">#ГК</span><span class="plenum-name">Постановление Пленума Верховного Суда РФ от 23.06.2015 N 25 "О применении судами некоторых положений раздела I части первой ГК РФ"</span></a>
+                        <a href="https://www.consultant.ru/document/cons_doc_LAW_314779/" target="_blank" class="card-item"><span class="plenum-subtag">#договор</span><span class="plenum-name">Постановление Пленума Верховного Суда РФ от 25.12.2018 N 49 "О некоторых вопросах применения общих положений ГК РФ о заключении и толковании договора"</span></a>
                     </div>
                 </div>
             </section>
@@ -671,83 +755,102 @@
         </aside>
     </div>
 
+    <!-- КНОПКА НАВЕРХ -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
     <script>
         (function() {
             document.addEventListener('DOMContentLoaded', function() {
+                // --- Поиск элементов ---
                 const menuItems = document.querySelectorAll('.menu-item');
                 const burgerBtn = document.getElementById('burgerBtn');
                 const menuPanel = document.getElementById('menuPanel');
                 const menuOverlay = document.getElementById('menuOverlay');
+                const backToTop = document.getElementById('backToTop');
                 
-                // ===== ПОИСК =====
+                // Элементы поиска
                 const consultantSearchBtn = document.getElementById('consultantSearchBtn');
                 const consultantQueryInput = document.getElementById('consultantQuery');
                 const checkoSearchBtn = document.getElementById('checkoSearchBtn');
                 const checkoQueryInput = document.getElementById('checkoQuery');
+                const sections = document.querySelectorAll('section[id]');
 
-                function performSearch(inputElement, baseUrl) {
-                    return function() {
+                // --- Вспомогательная функция для поиска ---
+                function setupSearch(button, inputElement, baseUrl) {
+                    if (!button || !inputElement) return;
+
+                    const performSearch = () => {
                         const query = inputElement.value.trim();
                         if (query) {
+                            // Открываем поисковый запрос в новой вкладке
                             window.open(baseUrl + encodeURIComponent(query), '_blank');
-                            inputElement.value = '';
+                            inputElement.value = ''; // Очищаем поле после поиска
                         }
                     };
-                }
 
-                if (consultantSearchBtn && consultantQueryInput) {
-                    const searchHandler = performSearch(consultantQueryInput, 'https://www.consultant.ru/cons/cgi/online.cgi?req=card&page=splus&splusFind=');
-                    consultantSearchBtn.addEventListener('click', searchHandler);
-                    consultantQueryInput.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') searchHandler();
+                    button.addEventListener('click', performSearch);
+                    inputElement.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault(); // Предотвращаем возможную отправку формы
+                            performSearch();
+                        }
                     });
                 }
 
-                if (checkoSearchBtn && checkoQueryInput) {
-                    const searchHandler = performSearch(checkoQueryInput, 'https://checko.ru/search?query=');
-                    checkoSearchBtn.addEventListener('click', searchHandler);
-                    checkoQueryInput.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') searchHandler();
+                // Настраиваем поиск
+                setupSearch(consultantSearchBtn, consultantQueryInput, 'https://www.consultant.ru/cons/cgi/online.cgi?req=card&page=splus&splusFind=');
+                setupSearch(checkoSearchBtn, checkoQueryInput, 'https://checko.ru/search?query=');
+
+                // --- КНОПКА "НАВЕРХ" ---
+                if (backToTop) {
+                    window.addEventListener('scroll', function() {
+                        // Показываем кнопку, если прокрутили больше 300px
+                        if (window.scrollY > 300) {
+                            backToTop.classList.add('visible');
+                        } else {
+                            backToTop.classList.remove('visible');
+                        }
+                    });
+
+                    backToTop.addEventListener('click', function() {
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
                     });
                 }
 
-                // ===== МОБИЛЬНОЕ МЕНЮ =====
+                // --- МОБИЛЬНОЕ МЕНЮ ---
                 if (burgerBtn && menuPanel && menuOverlay) {
-                    // Функция открытия/закрытия меню
-                    function toggleMenu(open) {
-                        if (open === undefined) {
-                            menuPanel.classList.toggle('open');
-                            menuOverlay.classList.toggle('active');
-                        } else if (open) {
+                    const toggleMenu = (open) => {
+                        const isOpen = open === undefined ? !menuPanel.classList.contains('open') : open;
+                        
+                        if (isOpen) {
                             menuPanel.classList.add('open');
                             menuOverlay.classList.add('active');
+                            burgerBtn.innerHTML = '<i class="fas fa-times"></i>';
                         } else {
                             menuPanel.classList.remove('open');
                             menuOverlay.classList.remove('active');
-                        }
-                        
-                        // Меняем иконку
-                        if (menuPanel.classList.contains('open')) {
-                            burgerBtn.innerHTML = '<i class="fas fa-times"></i>';
-                        } else {
                             burgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
                         }
-                    }
+                    };
 
-                    // Клик по бургеру
-                    burgerBtn.addEventListener('click', function(e) {
+                    burgerBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
                         toggleMenu();
                     });
 
-                    // Клик по пункту меню (закрываем и плавно прокручиваем)
+                    // Закрытие при клике на пункт меню на мобильных
                     menuItems.forEach(item => {
                         item.addEventListener('click', function(e) {
                             if (window.innerWidth <= 768) {
                                 toggleMenu(false);
                             }
                             
-                            // Плавная прокрутка к якорю
+                            // Плавная прокрутка к якорю (на всякий случай, если браузер не поддерживает smooth в CSS)
                             const targetId = this.getAttribute('href');
                             if (targetId && targetId !== '#') {
                                 e.preventDefault();
@@ -762,44 +865,37 @@
                         });
                     });
 
-                    // Клик по оверлею
-                    menuOverlay.addEventListener('click', function() {
-                        toggleMenu(false);
-                    });
+                    menuOverlay.addEventListener('click', () => toggleMenu(false));
 
-                    // Закрытие при ресайзе
                     window.addEventListener('resize', function() {
                         if (window.innerWidth > 768) {
                             toggleMenu(false);
                         }
                     });
 
-                    // Предотвращаем всплытие кликов внутри меню
-                    menuPanel.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                    });
+                    menuPanel.addEventListener('click', (e) => e.stopPropagation());
                 }
 
-                // ===== ПОДСВЕТКА АКТИВНОГО ПУНКТА МЕНЮ ПРИ ПРОКРУТКЕ =====
-                const sections = document.querySelectorAll('section[id]');
-                
+                // --- ПОДСВЕТКА АКТИВНОГО ПУНКТА МЕНЮ ---
                 function setActiveMenuItem() {
-                    let current = '';
-                    const scrollPosition = window.scrollY + 100; // Учитываем отступ
-                    
+                    let currentSectionId = '';
+                    const scrollPosition = window.scrollY + 80; // Небольшой отступ для более точного определения
+
+                    // Проходим по всем секциям и определяем, какая сейчас в области видимости
                     sections.forEach(section => {
                         const sectionTop = section.offsetTop;
                         const sectionBottom = sectionTop + section.offsetHeight;
                         
                         if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                            current = section.getAttribute('id');
+                            currentSectionId = section.getAttribute('id');
                         }
                     });
 
+                    // Убираем и добавляем класс active соответствующему пункту меню
                     menuItems.forEach(item => {
                         item.classList.remove('active');
                         const href = item.getAttribute('href');
-                        if (href === `#${current}`) {
+                        if (href === `#${currentSectionId}`) {
                             item.classList.add('active');
                         }
                     });
@@ -808,7 +904,7 @@
                 window.addEventListener('scroll', setActiveMenuItem);
                 window.addEventListener('load', setActiveMenuItem);
 
-                // Автофокус на поиске
+                // Автофокус на первом поле поиска (с небольшой задержкой)
                 setTimeout(() => {
                     if (consultantQueryInput) consultantQueryInput.focus();
                 }, 300);
